@@ -2,6 +2,7 @@ package sm2lib
 
 import (
 	"encoding/base64"
+	"errors"
 	"io/fs"
 	"io/ioutil"
 	"path/filepath"
@@ -16,8 +17,26 @@ type PublicKey struct {
 }
 
 // 从原生类型中获得公钥
-func (publicKey *PublicKey) FromRaw(src *sm2.PublicKey) {
-	publicKey.key = src
+func (publicKey *PublicKey) FromRaw(src *sm2.PublicKey) error {
+	var (
+		err    error
+		p      []byte
+		key    *sm2.PublicKey
+		errMsg = errors.New("不是有效的SM2公钥")
+	)
+	if src == nil {
+		return errMsg
+	}
+	p, err = x509.MarshalSm2PublicKey(src)
+	if err != nil {
+		return errMsg
+	}
+	key, err = x509.ParseSm2PublicKey(p)
+	if err != nil {
+		return err
+	}
+	publicKey.key = key
+	return nil
 }
 
 // 从[]byte中获得公钥

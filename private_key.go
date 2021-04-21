@@ -29,7 +29,7 @@ func (privateKey *PrivateKey) FromRaw(src *sm2.PrivateKey) error {
 		err    error
 		p      []byte
 		key    *sm2.PrivateKey
-		errMsg = errors.New("不是有效的sm2私钥")
+		errMsg = errors.New("不是有效的SM2私钥")
 	)
 	if src == nil {
 		return errMsg

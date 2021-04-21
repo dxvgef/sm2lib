@@ -66,7 +66,11 @@ func TestPrivateKey_New(t *testing.T) {
 }
 
 func TestPrivateKey_Raw(t *testing.T) {
-	privateKey.FromRaw(privateKey.ToRaw())
+	err := privateKey.FromRaw(privateKey.ToRaw())
+	if err != nil {
+		t.Error(err)
+		return
+	}
 }
 
 func TestPrivateKey_RawBytes(t *testing.T) {

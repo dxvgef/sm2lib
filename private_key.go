@@ -3,6 +3,7 @@ package sm2lib
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"errors"
 	"io/fs"
 	"io/ioutil"
 	"path/filepath"
@@ -23,8 +24,26 @@ func (privateKey *PrivateKey) New() (err error) {
 }
 
 // 从原生类型中获得私钥
-func (privateKey *PrivateKey) FromRaw(src *sm2.PrivateKey) {
-	privateKey.key = src
+func (privateKey *PrivateKey) FromRaw(src *sm2.PrivateKey) error {
+	var (
+		err    error
+		p      []byte
+		key    *sm2.PrivateKey
+		errMsg = errors.New("不是有效的sm2私钥")
+	)
+	if src == nil {
+		return errMsg
+	}
+	p, err = x509.MarshalSm2PrivateKey(src, nil)
+	if err != nil {
+		return errMsg
+	}
+	key, err = x509.ParsePKCS8PrivateKey(p, nil)
+	if err != nil {
+		return err
+	}
+	privateKey.key = key
+	return nil
 }
 
 // 从[]byte中获得私钥

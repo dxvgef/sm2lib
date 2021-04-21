@@ -50,11 +50,11 @@ func TestAll(t *testing.T) {
 	t.Run("TestSignHex", TestSignHex)
 
 	t.Run("TestEncrypt", TestEncrypt)
-	// t.Run("TestEncryptASN1", TestEncryptASN1)
-	// t.Run("TestEncryptBase64", TestEncryptBase64)
-	// t.Run("TestEncryptASN1Base64", TestEncryptASN1Base64)
-	// t.Run("TestEncryptHex", TestEncryptHex)
-	// t.Run("TestEncryptASN1Hex", TestEncryptASN1Hex)
+	t.Run("TestEncryptASN1", TestEncryptASN1)
+	t.Run("TestEncryptBase64", TestEncryptBase64)
+	t.Run("TestEncryptASN1Base64", TestEncryptASN1Base64)
+	t.Run("TestEncryptHex", TestEncryptHex)
+	t.Run("TestEncryptASN1Hex", TestEncryptASN1Hex)
 }
 
 func TestPrivateKey_New(t *testing.T) {

@@ -92,7 +92,7 @@ func (publicKey *PublicKey) FromHexFile(filePath string) (err error) {
 }
 
 // 公钥转为原生类型
-func (publicKey *PublicKey) ToRaw() *sm2.PublicKey {
+func (publicKey PublicKey) ToRaw() *sm2.PublicKey {
 	return publicKey.key
 }
 

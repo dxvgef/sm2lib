@@ -99,7 +99,7 @@ func (privateKey *PrivateKey) FromHexFile(filePath string, pwd []byte) (err erro
 }
 
 // 获得私钥原生类型
-func (privateKey *PrivateKey) ToRaw() *sm2.PrivateKey {
+func (privateKey PrivateKey) ToRaw() *sm2.PrivateKey {
 	return privateKey.key
 }
 

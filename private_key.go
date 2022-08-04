@@ -164,3 +164,29 @@ func (privateKey *PrivateKey) GetPublicKey() PublicKey {
 		key: &privateKey.key.PublicKey,
 	}
 }
+
+// 私钥保存为PEM编码的文件
+func (privateKey *PrivateKey) ToPEMFile(filePath string, pwd []byte, perm fs.FileMode) error {
+	buff, err := x509.WritePrivateKeyToPem(privateKey.ToRaw(), pwd)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(filepath.Clean(filePath), buff, perm)
+}
+
+// 从PEM编码的文件读取私钥
+func (privateKey *PrivateKey) FromPEMFile(filePath string, pwd []byte) error {
+	var privateKeyRaw *sm2.PrivateKey
+
+	// 读取PEM文件
+	fileData, err := os.ReadFile(filepath.Clean(filePath))
+	if err != nil {
+		return err
+	}
+
+	privateKeyRaw, err = x509.ReadPrivateKeyFromPem(fileData, pwd)
+	if err != nil {
+		return err
+	}
+	return privateKey.FromRaw(privateKeyRaw)
+}

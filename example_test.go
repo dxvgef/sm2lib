@@ -31,6 +31,7 @@ func TestAll(t *testing.T) {
 	t.Run("TestPrivateKeyNew", TestPrivateKey_New)
 	t.Run("TestPrivateKey_GetPublicKey", TestPrivateKey_GetPublicKey)
 
+	t.Run("TestPrivateKey_PEM", TestPrivateKey_PEM)
 	t.Run("TestPrivateKey_Raw", TestPrivateKey_Raw)
 	t.Run("TestPrivateKey_RawBytes", TestPrivateKey_RawBytes)
 	t.Run("TestPrivateKey_Base64", TestPrivateKey_Base64)
@@ -62,6 +63,19 @@ func TestPrivateKey_New(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 		return
+	}
+}
+
+func TestPrivateKey_PEM(t *testing.T) {
+	filePath := "./private_pem.key"
+	err := privateKey.ToPEMFile(filePath, privateKeyPWD, 0600)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	err = privateKey.FromPEMFile(filePath, privateKeyPWD)
+	if err != nil {
+		t.Error(err)
 	}
 }
 
@@ -143,7 +157,9 @@ func TestPrivateKey_GetPublicKey(t *testing.T) {
 }
 
 func TestPublicKey_Raw(t *testing.T) {
-	publicKey.FromRaw(publicKey.ToRaw())
+	if err := publicKey.FromRaw(publicKey.ToRaw()); err != nil {
+		t.Error(err)
+	}
 }
 
 func TestPublicKey_RawBytes(t *testing.T) {

@@ -10,7 +10,7 @@ import (
 
 // 公钥加密
 func (publicKey *PublicKey) Encrypt(data []byte) (result []byte, err error) {
-	result, err = sm2.Encrypt(publicKey.key, data, rand.Reader)
+	result, err = sm2.Encrypt(publicKey.key, data, rand.Reader, 1)
 	return
 }
 
@@ -21,7 +21,7 @@ func (publicKey *PublicKey) EncryptASN1(data []byte) ([]byte, error) {
 
 // 公钥加密并转成Base64编码
 func (publicKey *PublicKey) EncryptToBase64(encoding *base64.Encoding, data []byte) ([]byte, error) {
-	buff, err := sm2.Encrypt(publicKey.key, data, rand.Reader)
+	buff, err := sm2.Encrypt(publicKey.key, data, rand.Reader, 1)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (publicKey *PublicKey) EncryptASN1ToBase64(encoding *base64.Encoding, data 
 
 // 公钥加密并转成Hex编码
 func (publicKey *PublicKey) EncryptToHex(data []byte) ([]byte, error) {
-	buff, err := sm2.Encrypt(publicKey.key, data, rand.Reader)
+	buff, err := sm2.Encrypt(publicKey.key, data, rand.Reader, 1)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (publicKey *PublicKey) EncryptASN1ToHex(data []byte) ([]byte, error) {
 
 // 私钥解密
 func (privateKey *PrivateKey) Decrypt(data []byte) ([]byte, error) {
-	return sm2.Decrypt(privateKey.key, data)
+	return sm2.Decrypt(privateKey.key, data, 1)
 }
 
 // 私钥解密成asn.1编码的密文

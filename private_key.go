@@ -5,7 +5,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"io/fs"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"github.com/tjfoc/gmsm/sm2"
@@ -68,7 +68,7 @@ func (privateKey *PrivateKey) FromBase64(encoding *base64.Encoding, src, pwd []b
 // 从Base64文件中获得私钥
 func (privateKey *PrivateKey) FromBase64File(encoding *base64.Encoding, filePath string, pwd []byte) (err error) {
 	var fileData []byte
-	fileData, err = ioutil.ReadFile(filepath.Clean(filePath))
+	fileData, err = os.ReadFile(filepath.Clean(filePath))
 	if err != nil {
 		return
 	}
@@ -91,7 +91,7 @@ func (privateKey *PrivateKey) FromHex(src, pwd []byte) (err error) {
 // 从Hex文件中获得私钥
 func (privateKey *PrivateKey) FromHexFile(filePath string, pwd []byte) (err error) {
 	var fileData []byte
-	fileData, err = ioutil.ReadFile(filepath.Clean(filePath))
+	fileData, err = os.ReadFile(filepath.Clean(filePath))
 	if err != nil {
 		return
 	}
@@ -130,7 +130,7 @@ func (privateKey *PrivateKey) ToBase64File(encoding *base64.Encoding, filePath s
 	if err != nil {
 		return
 	}
-	return ioutil.WriteFile(filepath.Clean(filePath), buff, perm)
+	return os.WriteFile(filepath.Clean(filePath), buff, perm)
 }
 
 // 私钥转为Hex编码
@@ -155,7 +155,7 @@ func (privateKey *PrivateKey) ToHexFile(filePath string, pwd []byte, perm fs.Fil
 	if err != nil {
 		return
 	}
-	return ioutil.WriteFile(filepath.Clean(filePath), buff, perm)
+	return os.WriteFile(filepath.Clean(filePath), buff, perm)
 }
 
 // 获得公钥

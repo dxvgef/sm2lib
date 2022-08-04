@@ -142,3 +142,30 @@ func (publicKey *PublicKey) ToHexFile(filePath string, perm fs.FileMode) (err er
 	}
 	return os.WriteFile(filepath.Clean(filePath), buff, perm)
 }
+
+// 公钥保存为PEM编码的文件
+func (publicKey *PublicKey) ToPEMFile(filePath string, perm fs.FileMode) (err error) {
+	var buff []byte
+	buff, err = x509.WritePublicKeyToPem(publicKey.ToRaw())
+	if err != nil {
+		return
+	}
+	return os.WriteFile(filepath.Clean(filePath), buff, perm)
+}
+
+// 从PEM编码的文件中读取公钥
+func (publicKey *PublicKey) FromPEMFile(filePath string) (err error) {
+	var publicKeyRaw *sm2.PublicKey
+
+	// 读取PEM文件
+	fileData, err := os.ReadFile(filepath.Clean(filePath))
+	if err != nil {
+		return err
+	}
+
+	publicKeyRaw, err = x509.ReadPublicKeyFromPem(fileData)
+	if err != nil {
+		return err
+	}
+	return publicKey.FromRaw(publicKeyRaw)
+}

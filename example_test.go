@@ -39,6 +39,7 @@ func TestAll(t *testing.T) {
 	t.Run("TestPrivateKey_Hex", TestPrivateKey_Hex)
 	t.Run("TestPrivateKey_File", TestPrivateKey_HexFile)
 
+	t.Run("TestPublicKey_PEM", TestPublicKey_PEM)
 	t.Run("TestPublicKey_Raw", TestPublicKey_Raw)
 	t.Run("TestPublicKey_RawBytes", TestPublicKey_RawBytes)
 	t.Run("TestPublicKey_Base64", TestPublicKey_Base64)
@@ -366,5 +367,18 @@ func TestSignHex(t *testing.T) {
 	if !publicKey.Verify([]byte(plaintext), sign) {
 		t.Error("验签失败")
 		return
+	}
+}
+
+func TestPublicKey_PEM(t *testing.T) {
+	filePath := "./public_pem.key"
+	err := publicKey.ToPEMFile(filePath, 0600)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	err = publicKey.FromPEMFile(filePath)
+	if err != nil {
+		t.Error(err)
 	}
 }
